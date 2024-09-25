@@ -16,29 +16,35 @@ def get_stock_data(stock_symbol):
     return data, stock_info
 
 def generate_factors(stock_info):
-    """Generates key stock factors dynamically using GPT-4o-mini based on stock's sector and industry."""
-    prompt = f"Given the sector {stock_info['sector']} and industry {stock_info['industry']}, what are the key factors affecting a company's stock performance over the next 5 years?"
+    """Generates key stock factors dynamically using GPT-4 based on stock's sector and industry."""
+    messages = [
+        {"role": "system", "content": "You are a financial analyst."},
+        {"role": "user", "content": f"Given the sector {stock_info['sector']} and industry {stock_info['industry']}, what are the key factors affecting a company's stock performance over the next 5 years?"}
+    ]
     
-    response = openai.completions.create(
-        model="gpt-4o-mini",
-        prompt=prompt,
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=messages,
         max_tokens=300,
         temperature=0.7
     )
-    factors = response['choices'][0]['text'].strip().split('\n')
+    factors = response['choices'][0]['message']['content'].strip().split('\n')
     return factors
 
 def analyze_factor(factor, stock_info):
-    """Uses GPT-4o-mini to analyze each factor and assigns rating, confidence, and importance."""
-    prompt = f"Analyze the factor '{factor}' for stock performance in the {stock_info['sector']} sector. What is the rating, confidence, and importance for predicting the stock’s 5-year performance?"
+    """Uses GPT-4 to analyze each factor and assigns rating, confidence, and importance."""
+    messages = [
+        {"role": "system", "content": "You are a financial analyst."},
+        {"role": "user", "content": f"Analyze the factor '{factor}' for stock performance in the {stock_info['sector']} sector. What is the rating, confidence, and importance for predicting the stock’s 5-year performance?"}
+    ]
     
-    response = openai.completions.create(
-        model="gpt-4o-mini",
-        prompt=prompt,
+    response = openai.ChatCompletion.create(
+        model="gpt-4",
+        messages=messages,
         max_tokens=150,
         temperature=0.7
     )
-    analysis = response['choices'][0]['text'].strip()
+    analysis = response['choices'][0]['message']['content'].strip()
     return analysis
 
 def run_analysis(stock_symbol, time_horizon):
