@@ -22,8 +22,8 @@ def generate_factors(stock_info):
         {"role": "user", "content": f"Given the sector {stock_info['sector']} and industry {stock_info['industry']}, what are the key factors affecting a company's stock performance over the next 5 years?"}
     ]
     
-    response = openai.chat_completions.create(
-        model="gpt-4",
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",
         messages=messages,
         max_tokens=300,
         temperature=0.7
@@ -38,8 +38,8 @@ def analyze_factor(factor, stock_info):
         {"role": "user", "content": f"Analyze the factor '{factor}' for stock performance in the {stock_info['sector']} sector. What is the rating, confidence, and importance for predicting the stock’s 5-year performance?"}
     ]
     
-    response = openai.chat_completions.create(
-        model="gpt-4",
+    response = openai.ChatCompletion.create(
+        model="gpt-4o-mini",
         messages=messages,
         max_tokens=150,
         temperature=0.7
