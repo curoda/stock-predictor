@@ -18,7 +18,7 @@ def get_stock_data(stock_symbol):
 def generate_factors(stock_info):
     """Generates key stock factors dynamically using GPT-4o-mini based on stock's sector and industry."""
     prompt = f"Given the sector {stock_info['sector']} and industry {stock_info['industry']}, what are the key factors affecting a company's stock performance over the next 5 years?"
-    response = openai.ChatCompletion.create(
+    response = openai.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "system", "content": "You are a financial analyst."},
                   {"role": "user", "content": prompt}],
@@ -31,7 +31,7 @@ def generate_factors(stock_info):
 def analyze_factor(factor, stock_info):
     """Uses GPT-4o-mini to analyze each factor and assigns rating, confidence, and importance."""
     prompt = f"Analyze the factor '{factor}' for stock performance in the {stock_info['sector']} sector. What is the rating, confidence, and importance for predicting the stock’s 5-year performance?"
-    response = openai.ChatCompletion.create(
+    response = openai.completions.create(
         model="gpt-4o-mini",
         messages=[{"role": "system", "content": "You are a financial analyst."},
                   {"role": "user", "content": prompt}],
